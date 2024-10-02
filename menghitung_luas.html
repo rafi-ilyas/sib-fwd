@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menghitung Luas</title>
+</head>
+<body>
+    <h1>Menghitung Luas Persegi Panjang dan Lingkaran</h1>
+
+    <!-- Elemen untuk menampilkan hasil perhitungan -->
+    <p id="hasilPersegiPanjang"></p>
+    <p id="hasilLingkaran"></p>
+    
+    <script>
+        // Function declaration untuk menghitung luas persegi panjang
+        function hitungLuasPersegiPanjang(panjang, lebar) {
+            return panjang * lebar; // Rumus untuk menghitung persegi panjang: panjang * lebar
+        }
+
+        // Arrow function untuk menghitung luas lingkaran
+        const hitungLuasLingkaran = (jariJari) => {
+            const pi = 3.14159;
+            return pi * jariJari * jariJari; // Rumus untuk menghitung lingkaran: π * jari-jari^2
+        }
+
+        // Memanggil fungsi hitung Luas Persegi Panjang
+        const panjang = 10;
+        const lebar = 5;
+        const luasPersegiPanjang = hitungLuasPersegiPanjang(panjang, lebar);
+
+        // Memanggil fungsi hitungLuasLingkaran dengan jari-jari
+        const jariJari = 7;
+        const luasLingkaran = hitungLuasLingkaran(jariJari);
+
+        // untuk menampilkan hasil hitung luas persegi panjang dan lingkaran di website menggunakan innerHTML
+        document.getElementById("hasilPersegiPanjang").innerHTML = `Luas Persegi Panjang dengan panjang ${panjang} dan lebar ${lebar} adalah ${luasPersegiPanjang}`;
+        document.getElementById("hasilLingkaran").innerHTML = `Luas Lingkaran dengan jari-jari ${jariJari} adalah ${luasLingkaran}`;
+    </script>
+</body>
+</html>
