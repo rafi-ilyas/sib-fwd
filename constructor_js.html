@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hitung Gaji Bersih</title>
+</head>
+<body>
+    <h1>Hitung Gaji Bersih</h1>
+    <form id="gajiForm">
+        <label for="golongan">Masukkan Golongan (1, 2, 3): </label>
+        <input type="number" id="golongan" name="golongan" required>
+        <br><br>
+        <label for="status">Apakah sudah menikah? </label>
+        <select id="status" name="status">
+            <option value="y">Ya</option>
+            <option value="n">Tidak</option>
+        </select>
+        <br><br>
+        <button type="button" onclick="hitungGaji()">Hitung Gaji</button>
+    </form>
+
+    <script>
+        function hitungGaji() {
+            const golongan = parseInt(document.getElementById("golongan").value);
+            const sudahMenikah = document.getElementById("status").value === "y";
+            let gajiPokok = 0;
+            let tunjangan = 0;
+
+            // Menggunakan switch case untuk logika golongan
+            switch (golongan) {
+                case 1:
+                    gajiPokok = 10000000;
+                    break;
+                case 2:
+                    gajiPokok = 15000000;
+                    if (sudahMenikah) {
+                        tunjangan = 2000000;
+                    }
+                    break;
+                case 3:
+                    gajiPokok = 20000000;
+                    break;
+                default:
+                    document.write("Golongan tidak valid.");
+                    return;
+            }
+
+            const gajiBersih = gajiPokok + tunjangan;
+            document.write("Gaji bersih: " + gajiBersih);
+        }
+    </script>
+</body>
+</html>  
