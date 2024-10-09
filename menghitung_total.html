@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hitung Total</title>
+</head>
+<body>
+    <h1>Coba Fungsi hitungTotal</h1>
+    <div id="result"></div> <!-- Elemen untuk menampilkan hasil -->
+
+    <script>
+        const hitungTotal = (nama, ...nilai) => {
+            // Gabungkan array 'nilai' dengan array tambahan menggunakan operator spread
+            const nilaiGabungan = [...nilai, 3, 7];
+
+            // Hitung total nilai menggunakan reduce
+            const totalNilai = nilaiGabungan.reduce((acc, curr) => acc + curr, 0);
+
+            // Tampilkan hasil di halaman web
+            document.getElementById('result').innerText = `Nama: ${nama}, Total Nilai: ${totalNilai}`;
+        };
+
+        // Contoh penggunaan
+        hitungTotal("Budi", 10, 20, 30);
+    </script>
+</body>
+</html>
