@@ -7,7 +7,6 @@
 </head>
 <body>
     <h1>Coba Fungsi hitungTotal</h1>
-    <div id="result"></div> <!-- Elemen untuk menampilkan hasil -->
 
     <script>
         const hitungTotal = (nama, ...nilai) => {
@@ -17,8 +16,8 @@
             // Hitung total nilai menggunakan reduce
             const totalNilai = nilaiGabungan.reduce((acc, curr) => acc + curr, 0);
 
-            // Tampilkan hasil di halaman web
-            document.getElementById('result').innerText = `Nama: ${nama}, Total Nilai: ${totalNilai}`;
+            // Cetak hasil ke konsol
+            console.log(`Nama: ${nama}, Total Nilai: ${totalNilai}`);
         };
 
         // Contoh penggunaan
