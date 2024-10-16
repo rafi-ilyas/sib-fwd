@@ -1,0 +1,168 @@
+Microsoft Windows [Version 10.0.22631.4317]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\Rafi Ilyas Ramadani>cd \xampp\mysql\bin
+
+C:\xampp\mysql\bin>mysql -u root -p dbpossi02
+Enter password:
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 106
+Server version: 10.4.27-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [dbpossi02]> SELECT * FROM produk;
++----+------+------------------+------------+------------+------+----------+-----------------+
+| id | kode | nama             | harga_beli | harga_jual | stok | min_stok | jenis_produk_id |
++----+------+------------------+------------+------------+------+----------+-----------------+
+|  1 | TV01 | Televisi 21 inch |    3500000 |    5241600 | NULL |        2 |               1 |
+|  2 | TV02 | Televisi 40 inch |    5500000 |    7737600 |    5 |        2 |               1 |
+|  3 | K001 | Kulkas 2 pintu   |    3500000 |    4867200 |    0 |        2 |               1 |
+|  4 | M001 | Meja Makan       |     500000 |     660000 |    6 |        3 |               2 |
+|  5 | TK01 | Teh Kotak        |       3000 |       4235 |    0 |       10 |               4 |
+|  6 | PC01 | PC Desktop HP    |    7000000 |    9600000 |    3 |        2 |               5 |
+|  7 | TB01 | Teh Botol        |       2000 |       3025 |   39 |       10 |               4 |
+|  8 | AC01 | Notebook Acer    |    8000000 |   10800000 |    1 |        2 |               5 |
+|  9 | LN01 | Notebook Lenovo  |    9000000 |   12000000 |    3 |        2 |               5 |
++----+------+------------------+------------+------------+------+----------+-----------------+
+9 rows in set (0.001 sec)
+
+
+#Menampilkan produk yang kode huruf K dan huruf M
+
+MariaDB [dbpossi02]> SELECT * FROM produk WHERE kode LIKE 'K%' OR kode LIKE 'M%';
++----+------+----------------+------------+------------+------+----------+-----------------+
+| id | kode | nama           | harga_beli | harga_jual | stok | min_stok | jenis_produk_id |
++----+------+----------------+------------+------------+------+----------+-----------------+
+|  3 | K001 | Kulkas 2 pintu |    3500000 |    4867200 |    0 |        2 |               1 |
+|  4 | M001 | Meja Makan     |     500000 |     660000 |    6 |        3 |               2 |
++----+------+----------------+------------+------------+------+----------+-----------------+
+2 rows in set (0.004 sec)
+
+#Menampilkan produk yang kode awalnya bukan huruf M
+
+MariaDB [dbpossi02]> SELECT * FROM produk WHERE kode NOT LIKE 'M%';
++----+------+------------------+------------+------------+------+----------+-----------------+
+| id | kode | nama             | harga_beli | harga_jual | stok | min_stok | jenis_produk_id |
++----+------+------------------+------------+------------+------+----------+-----------------+
+|  1 | TV01 | Televisi 21 inch |    3500000 |    5241600 | NULL |        2 |               1 |
+|  2 | TV02 | Televisi 40 inch |    5500000 |    7737600 |    5 |        2 |               1 |
+|  3 | K001 | Kulkas 2 pintu   |    3500000 |    4867200 |    0 |        2 |               1 |
+|  5 | TK01 | Teh Kotak        |       3000 |       4235 |    0 |       10 |               4 |
+|  6 | PC01 | PC Desktop HP    |    7000000 |    9600000 |    3 |        2 |               5 |
+|  7 | TB01 | Teh Botol        |       2000 |       3025 |   39 |       10 |               4 |
+|  8 | AC01 | Notebook Acer    |    8000000 |   10800000 |    1 |        2 |               5 |
+|  9 | LN01 | Notebook Lenovo  |    9000000 |   12000000 |    3 |        2 |               5 |
++----+------+------------------+------------+------------+------+----------+-----------------+
+8 rows in set (0.001 sec)
+
+#menampilkan produk produk televisi
+
+MariaDB [dbpossi02]> SELECT * FROM produk WHERE nama LIKE '%televisi%';
++----+------+------------------+------------+------------+------+----------+-----------------+
+| id | kode | nama             | harga_beli | harga_jual | stok | min_stok | jenis_produk_id |
++----+------+------------------+------------+------------+------+----------+-----------------+
+|  1 | TV01 | Televisi 21 inch |    3500000 |    5241600 | NULL |        2 |               1 |
+|  2 | TV02 | Televisi 40 inch |    5500000 |    7737600 |    5 |        2 |               1 |
++----+------+------------------+------------+------------+------+----------+-----------------+
+2 rows in set (0.001 sec)
+
+#menampilkan pelanggan mengandung huruf 'SA'
+
+MariaDB [dbpossi02]> SELECT * FROM pelanggan WHERE nama LIKE '%S
+A%';
++----+------+-------------+------+-----------+------------+------------------+----------+
+| id | kode | nama        | jk   | tmp_lahir | tgl_lahir  | email            | kartu_id |
++----+------+-------------+------+-----------+------------+------------------+----------+
+|  9 | C009 | Ahmad Hasan | L    | Surabaya  | 1992-10-15 | ahasan@gmail.com |        4 |
+| 10 | C010 | Cassanndra  | P    | Belfast   | 1990-11-20 | casa90@gmail.com |        1 |
++----+------+-------------+------+-----------+------------+------------------+----------+
+2 rows in set (0.003 sec)
+
+#Menampilkan pelanggan yang lahirnya bukan di Jakarta dan mengandung huruf 'yo'
+
+MariaDB [dbpossi02]> SELECT * FROM pelanggan WHERE tmp_lahir != 'jakarta' AND nama LIKE '%yo%';
+Empty set (0.001 sec)
+
+#menampilkan pelanggan yang karakter huruf ke -2nnya adalah A
+
+MariaDB [dbpossi02]> SELECT * FROM pelanggan WHERE nama LIKE '_A
+%';
++----+------+--------------+------+------------+------------+------------------+----------+
+| id | kode | nama         | jk   | tmp_lahir  | tgl_lahir  | email            | kartu_id |
++----+------+--------------+------+------------+------------+------------------+----------+
+|  2 | C002 | Pandan Wangi | P    | Yogyakarta | 1950-01-01 | wangi@gmail.com  |        2 |
+|  6 | C006 | Gayatri Dwi  | P    | Jakarta    | 1987-11-28 | gaya87@gmail.com |        1 |
+| 10 | C010 | Cassanndra   | P    | Belfast    | 1990-11-20 | casa90@gmail.com |        1 |
++----+------+--------------+------+------------+------------+------------------+----------+
+3 rows in set (0.001 sec)
+
+#menampilkan 2 data produk termahal
+
+MariaDB [dbpossi02]> SELECT * FROM produk ORDER BY harga_beli DE
+SC LIMIT 2;
++----+------+-----------------+------------+------------+------+----------+-----------------+
+| id | kode | nama            | harga_beli | harga_jual | stok | min_stok | jenis_produk_id |
++----+------+-----------------+------------+------------+------+----------+-----------------+
+|  9 | LN01 | Notebook Lenovo |    9000000 |   12000000 |    3 |        2 |               5 |
+|  8 | AC01 | Notebook Acer   |    8000000 |   10800000 |    1 |        2 |               5 |
++----+------+-----------------+------------+------------+------+----------+-----------------+
+2 rows in set (0.001 sec)
+
+#menampilkan 2 data produk paling murah
+
+MariaDB [dbpossi02]> SELECT * FROM produk ORDER BY harga_beli DESC LIMIT 1;
++----+------+-----------------+------------+------------+------+----------+-----------------+
+| id | kode | nama            | harga_beli | harga_jual | stok | min_stok | jenis_produk_id |
++----+------+-----------------+------------+------------+------+----------+-----------------+
+|  9 | LN01 | Notebook Lenovo |    9000000 |   12000000 |    3 |        2 |               5 |
++----+------+-----------------+------------+------------+------+----------+-----------------+
+1 row in set (0.002 sec)
+
+#menampilkan produk yang stoknya paling banyak
+
+MariaDB [dbpossi02]> SELECT * FROM produk ORDER BY stok DESC LIM
+IT 1;
++----+------+-----------+------------+------------+------+----------+-----------------+
+| id | kode | nama      | harga_beli | harga_jual | stok | min_stok | jenis_produk_id |
++----+------+-----------+------------+------------+------+----------+-----------------+
+|  7 | TB01 | Teh Botol |       2000 |       3025 |   39 |       10 |               4 |
++----+------+-----------+------------+------------+------+----------+-----------------+
+1 row in set (0.001 sec)
+
+#menampilkan produk yang stoknya paling sedikit
+
+MariaDB [dbpossi02]> SELECT * FROM produk ORDER BY stok ASC LIMI
+T 2;
++----+------+------------------+------------+------------+------+----------+-----------------+
+| id | kode | nama             | harga_beli | harga_jual | stok | min_stok | jenis_produk_id |
++----+------+------------------+------------+------------+------+----------+-----------------+
+|  1 | TV01 | Televisi 21 inch |    3500000 |    5241600 | NULL |        2 |               1 |
+|  3 | K001 | Kulkas 2 pintu   |    3500000 |    4867200 |    0 |        2 |               1 |
++----+------+------------------+------------+------------+------+----------+-----------------+
+2 rows in set (0.001 sec)
+
+#menampilkan pelanggan paling muda
+
+MariaDB [dbpossi02]> SELECT * FROM pelanggan ORDER BY tgl_lahir
+DESC LIMIT 1;
++----+------+--------------+------+-----------+------------+------------------+----------+
+| id | kode | nama         | jk   | tmp_lahir | tgl_lahir  | email            | kartu_id |
++----+------+--------------+------+-----------+------------+------------------+----------+
+|  1 | C001 | Agung Sedayu | L    | Solo      | 2010-01-01 | sedayu@gmail.com |        1 |
++----+------+--------------+------+-----------+------------+------------------+----------+
+1 row in set (0.002 sec)
+
+#menampilkan pelanggan paling tua
+
+MariaDB [dbpossi02]> SELECT * FROM pelanggan ORDER BY tgl_lahir ASC LIMIT 1;
++----+------+--------------+------+------------+------------+-----------------+----------+
+| id | kode | nama         | jk   | tmp_lahir  | tgl_lahir  | email           | kartu_id |
++----+------+--------------+------+------------+------------+-----------------+----------+
+|  2 | C002 | Pandan Wangi | P    | Yogyakarta | 1950-01-01 | wangi@gmail.com |        2 |
++----+------+--------------+------+------------+------------+-----------------+----------+
+1 row in set (0.001 sec)
+
+MariaDB [dbpossi02]>

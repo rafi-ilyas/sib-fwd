@@ -1,0 +1,37 @@
+-- Create the Vendor Table
+CREATE TABLE vendor (
+    id INT PRIMARY KEY,
+    nomor VARCHAR(20),
+    nama VARCHAR(50),
+    kode VARCHAR(20),
+    alamat VARCHAR(100),
+    kontak VARCHAR(20)
+);
+
+-- Create the Pembelian Table with a foreign key linking to the Vendor Table
+CREATE TABLE pembelian (
+    id INT PRIMARY KEY,
+    tanggal DATE,
+    nomor VARCHAR(20),
+    produk_id INT,
+    jumlah INT,
+    harga DECIMAL(10, 2),
+    vendor_id INT,
+    FOREIGN KEY (vendor_id) REFERENCES vendor(id)
+);
+
+-- Insert data into the Vendor Table
+INSERT INTO vendor (id, nomor, nama, kode, alamat, kontak) VALUES 
+(1, 'V001', 'Vendor A', 'VA001', 'Alamat A', '08123456789'),
+(2, 'V002', 'Vendor B', 'VB002', 'Alamat B', '08198765432'),
+(3, 'V003', 'Vendor C', 'VC003', 'Alamat C', '08211234567'),
+(4, 'V004', 'Vendor D', 'VD004', 'Alamat D', '08323456789'),
+(5, 'V005', 'Vendor E', 'VE005', 'Alamat E', '08456789123');
+
+-- Insert data into the Pembelian Table
+INSERT INTO pembelian (id, tanggal, nomor, produk_id, jumlah, harga, vendor_id) VALUES 
+(1, '2024-10-01', 'P001', 101, 10, 5000.00, 1),
+(2, '2024-10-02', 'P002', 102, 5, 7000.00, 2),
+(3, '2024-10-03', 'P003', 103, 20, 2000.00, 3),
+(4, '2024-10-04', 'P004', 104, 15, 4500.00, 4),
+(5, '2024-10-05', 'P005', 105, 8, 6000.00, 5);
