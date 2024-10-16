@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Siswa</title>
+</head>
+<body>
+
+    <table border="1" id="siswaTable">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Nama</th>
+                <th>Nilai</th>
+                <th>Keterangan</th>
+                <th>Grade</th>
+                <th>Predikat</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Data siswa akan dimasukkan melalui JavaScript -->
+        </tbody>
+    </table>
+
+    <script>
+        // Data siswa
+        let s1 = { 'nama': 'Ali', 'Nilai': 80 };
+        let s2 = { 'nama': 'Budi', 'Nilai': 90 };
+        let s3 = { 'nama': 'Cici', 'Nilai': 70 };
+        let s4 = { 'nama': 'Dedi', 'Nilai': 50 };
+        let s5 = { 'nama': 'Evi', 'Nilai': 30 };
+
+        // Array berisi data siswa
+        let siswa = [s1, s2, s3, s4, s5];
+
+        // Fungsi untuk menentukan grade berdasarkan nilai
+        function getGrade(nilai) {
+            if (nilai >= 85) return 'A';
+            else if (nilai >= 75) return 'B';
+            else if (nilai >= 60) return 'C';
+            else if (nilai >= 30) return 'D';
+            else return 'E';
+        }
+
+        // Fungsi untuk menentukan predikat
+        function getPredikat(nilai) {
+            if (nilai >= 85) return 'Sangat Baik';
+            else if (nilai >= 75) return 'Baik';
+            else if (nilai >= 60) return 'Cukup';
+            else if (nilai >= 30) return 'Kurang';
+            else return 'Sangat Kurang';
+        }
+
+        // Fungsi untuk menampilkan data siswa dalam tabel
+        function populateTable() {
+            let tableBody = document.querySelector('#siswaTable tbody');
+            tableBody.innerHTML = '';
+
+            siswa.forEach((item, index) => {
+                let row = document.createElement('tr');
+
+                // Kolom No
+                let cellNo = document.createElement('td');
+                cellNo.textContent = index + 1;
+                row.appendChild(cellNo);
+
+                // Kolom Nama
+                let cellNama = document.createElement('td');
+                cellNama.textContent = item.nama;
+                row.appendChild(cellNama);
+
+                // Kolom Nilai
+                let cellNilai = document.createElement('td');
+                cellNilai.textContent = item.Nilai;
+                row.appendChild(cellNilai);
+
+                // Kolom Keterangan
+                let cellKeterangan = document.createElement('td');
+                cellKeterangan.textContent = item.Nilai > 60 ? 'Lulus' : 'Tidak Lulus';
+                row.appendChild(cellKeterangan);
+
+                // Kolom Grade
+                let cellGrade = document.createElement('td');
+                cellGrade.textContent = getGrade(item.Nilai);
+                row.appendChild(cellGrade);
+
+                // Kolom Predikat
+                let cellPredikat = document.createElement('td');
+                cellPredikat.textContent = getPredikat(item.Nilai);
+                row.appendChild(cellPredikat);
+
+                // Tambahkan baris ke tabel
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Panggil fungsi untuk menampilkan tabel
+        populateTable();
+    </script>
+
+</body>
+</html>
