@@ -1,0 +1,141 @@
+Microsoft Windows [Version 10.0.22631.4317]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\Rafi Ilyas Ramadani>cd /xampp/mysql/bin
+
+C:\xampp\mysql\bin>mysql -u root -p dbpossib7
+Enter password:
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 8
+Server version: 10.4.27-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [dbpossib7]> DELIMITER $$
+MariaDB [dbpossib7]>
+MariaDB [dbpossib7]> CREATE PROCEDURE pro_naikan_harga(
+    ->     IN jenis_produk INT,
+    ->     IN persentasi_kenaikan INT
+    -> )
+    -> BEGIN
+    ->     UPDATE produk
+    ->     SET harga_jual = harga_jual + (harga_jual * persentasi_kenaikan / 100)
+    ->     WHERE jenis_produk_id = jenis_produk;
+    -> END $$
+Query OK, 0 rows affected (0.018 sec)
+
+MariaDB [dbpossib7]>
+MariaDB [dbpossib7]> DELIMITER ;
+MariaDB [dbpossib7]> CALL pro_naikan_harga(1, 4); -- Here, 1 isthe `jenis_produk_id` and 4 represents a 4% increase.
+Query OK, 3 rows affected (0.042 sec)
+
+MariaDB [dbpossib7]> DELIMITER $$
+MariaDB [dbpossib7]>
+MariaDB [dbpossib7]> CREATE FUNCTION umur(tgl_lahir DATE)
+    -> RETURNS INT
+    -> DETERMINISTIC
+    -> BEGIN
+    ->     DECLARE calculated_age INT;
+    ->     SET calculated_age = YEAR(CURDATE()) - YEAR(tgl_lahir);
+    ->     RETURN calculated_age;
+    -> END $$
+Query OK, 0 rows affected (0.011 sec)
+
+MariaDB [dbpossib7]>
+MariaDB [dbpossib7]> DELIMITER ;
+MariaDB [dbpossib7]> SELECT nama, umur(tgl_lahir) AS umur FROM pelanggan;
++---------------+------+
+| nama          | umur |
++---------------+------+
+| Agung Sedayu  |   14 |
+| Pandan Wangi  |   74 |
+| Sekar Mirah   |   41 |
+| Swandaru Geni |   43 |
+| Pradabashu    |   39 |
+| Gayatri Dwi   |   37 |
+| Dewi Gyat     |   36 |
+| Andre Haru    |   34 |
+| Ahmad Hasan   |   32 |
+| Cassanndra    |   34 |
++---------------+------+
+10 rows in set (0.023 sec)
+
+MariaDB [dbpossib7]> DELIMITER $$
+MariaDB [dbpossib7]>
+MariaDB [dbpossib7]> CREATE FUNCTION kategori_harga(price DOUBLE)
+    -> RETURNS VARCHAR(20)
+    -> DETERMINISTIC
+    -> BEGIN
+    ->     DECLARE category VARCHAR(20);
+    ->
+    ->     IF price >= 0 AND price <= 500000 THEN
+    ->         SET category = 'murah';
+    ->     ELSEIF price > 500000 AND price <= 3000000 THEN
+    ->         SET category = 'sedang';
+    ->     ELSEIF price > 3000000 AND price <= 10000000 THEN
+    ->         SET category = 'mahal';
+    ->     ELSE
+    ->         SET category = 'sangat mahal';
+    ->     END IF;
+    ->
+    ->     RETURN category;
+    -> END $$
+Query OK, 0 rows affected (0.005 sec)
+
+MariaDB [dbpossib7]>
+MariaDB [dbpossib7]> DELIMITER ;
+MariaDB [dbpossib7]> SELECT kategori_harga(750000);
++------------------------+
+| kategori_harga(750000) |
++------------------------+
+| sedang                 |
++------------------------+
+1 row in set (0.004 sec)
+
+MariaDB [dbpossib7]> START TRANSACTION;
+Query OK, 0 rows affected (0.005 sec)
+
+MariaDB [dbpossib7]>
+MariaDB [dbpossib7]> -- Insert three records into `produk` table
+
+MariaDB [dbpossib7]> INSERT INTO produk (kode, nama, harga_beli, harga_jual, stok, min_stok, jenis_produk_id)
+    -> VALUES ('P001', 'Produk A', 800000, 1000000, 10, 5, 1),
+    ->        ('P002', 'Produk B', 1500000, 2000000, 20, 10, 2),
+
+    ->        ('P003', 'Produk C', 2500000, 3000000, 15, 8, 1);
+Query OK, 3 rows affected (0.013 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+MariaDB [dbpossib7]>
+MariaDB [dbpossib7]> -- Update stock of one product
+MariaDB [dbpossib7]> UPDATE produk
+    -> SET stok = stok + 5
+    -> WHERE nama_produk = 'Produk A';
+ERROR 1054 (42S22): Unknown column 'nama_produk' in 'where clause'
+MariaDB [dbpossib7]>
+MariaDB [dbpossib7]> -- Create a savepoint
+MariaDB [dbpossib7]> SAVEPOINT before_delete_payment;
+Query OK, 0 rows affected (0.000 sec)
+
+MariaDB [dbpossib7]>
+MariaDB [dbpossib7]> -- Delete one payment record
+MariaDB [dbpossib7]> DELETE FROM pembayaran
+    -> WHERE pembayaran_id = 1;
+ERROR 1054 (42S22): Unknown column 'pembayaran_id' in 'where clause'
+MariaDB [dbpossib7]>
+MariaDB [dbpossib7]> -- Rollback to the savepoint
+MariaDB [dbpossib7]> ROLLBACK TO SAVEPOINT before_delete_payment;
+Query OK, 0 rows affected (0.000 sec)
+
+MariaDB [dbpossib7]>
+MariaDB [dbpossib7]> -- Update the fee of one card (assuming there is a column `iuran` in `kartu` table)
+MariaDB [dbpossib7]> UPDATE kartu
+    -> SET iuran = iuran + 50000
+    -> WHERE kartu_id = 1;
+ERROR 1054 (42S22): Unknown column 'kartu_id' in 'where clause'
+MariaDB [dbpossib7]>
+MariaDB [dbpossib7]> -- Commit the transaction
+MariaDB [dbpossib7]> COMMIT;
+Query OK, 0 rows affected (0.000 sec)
+MariaDB [dbpossib7]>
