@@ -13,15 +13,6 @@ Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
 
 Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 
-MariaDB [dbpossib7]> DROP TRIGGER IF EXISTS cek_pembayaran;
-Query OK, 0 rows affected (0.020 sec)
-
-MariaDB [dbpossib7]> DROP TRIGGER IF EXISTS trig_kurangi_stok;
-Query OK, 0 rows affected (0.069 sec)
-
-MariaDB [dbpossib7]> DROP PROCEDURE IF EXISTS kurangi_stok;
-Query OK, 0 rows affected, 1 warning (0.014 sec)
-
 MariaDB [dbpossib7]> DELIMITER $$
 MariaDB [dbpossib7]> CREATE PROCEDURE kurangi_stok(
     ->     IN p_produk_id INT,
@@ -71,6 +62,4 @@ MariaDB [dbpossib7]> INSERT INTO pembayaran (nokuitansi, tanggal, jumlah, ke, pe
     -> VALUES ('KWI005', '2023-03-03', 200000, 1, 1);
     -> END $$
 Query OK, 1 row affected (0.025 sec)
-
-ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'END' at line 1
 MariaDB [dbpossib7]>
