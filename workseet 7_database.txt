@@ -1,0 +1,76 @@
+Microsoft Windows [Version 10.0.22631.4317]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\Rafi Ilyas Ramadani>cd /xampp/mysql/bin
+
+C:\xampp\mysql\bin>mysql -u root -p dbpossib7
+Enter password:
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 8
+Server version: 10.4.27-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [dbpossib7]> DROP TRIGGER IF EXISTS cek_pembayaran;
+Query OK, 0 rows affected (0.020 sec)
+
+MariaDB [dbpossib7]> DROP TRIGGER IF EXISTS trig_kurangi_stok;
+Query OK, 0 rows affected (0.069 sec)
+
+MariaDB [dbpossib7]> DROP PROCEDURE IF EXISTS kurangi_stok;
+Query OK, 0 rows affected, 1 warning (0.014 sec)
+
+MariaDB [dbpossib7]> DELIMITER $$
+MariaDB [dbpossib7]> CREATE PROCEDURE kurangi_stok(
+    ->     IN p_produk_id INT,
+    ->     IN p_qty INT
+    -> )
+    -> BEGIN
+    ->     UPDATE produk
+    ->     SET stok = stok - p_qty
+    ->     WHERE id = p_produk_id;
+    -> END $$
+Query OK, 0 rows affected (0.006 sec)
+
+MariaDB [dbpossib7]> DELIMITER $$
+MariaDB [dbpossib7]> CREATE TRIGGER cek_pembayaran
+    -> BEFORE INSERT ON pembayaran
+    -> FOR EACH ROW
+    -> BEGIN
+    ->     DECLARE total_bayar DECIMAL(10, 2);
+    ->     DECLARE total_pesanan DECIMAL(10, 2);
+    ->
+    ->     SELECT COALESCE(SUM(jumlah), 0) INTO total_bayar
+    ->     FROM pembayaran
+    ->     WHERE pesanan_id = NEW.pesanan_id;
+    ->
+    ->     SELECT total INTO total_pesanan
+    ->     FROM pesanan
+    ->     WHERE id = NEW.pesanan_id;
+    ->
+    ->     IF total_bayar + NEW.jumlah >= total_pesanan THEN
+    ->         SET NEW.status_pembayaran = 'Lunas';
+    ->     ELSE
+    ->         SET NEW.status_pembayaran = 'Belum Lunas';
+    ->     END IF;
+    -> END $$
+Query OK, 0 rows affected (0.009 sec)
+
+MariaDB [dbpossib7]> DELIMITER $$
+MariaDB [dbpossib7]> CREATE TRIGGER trig_kurangi_stok
+    -> AFTER INSERT ON pesanan_items
+    -> FOR EACH ROW
+    -> BEGIN
+    ->     CALL kurangi_stok(NEW.produk_id, NEW.qty);
+    -> END $$
+Query OK, 0 rows affected (0.019 sec)
+
+MariaDB [dbpossib7]> INSERT INTO pembayaran (nokuitansi, tanggal, jumlah, ke, pesanan_id)
+    -> VALUES ('KWI005', '2023-03-03', 200000, 1, 1);
+    -> END $$
+Query OK, 1 row affected (0.025 sec)
+
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'END' at line 1
+MariaDB [dbpossib7]>
